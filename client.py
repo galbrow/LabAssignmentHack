@@ -18,6 +18,7 @@ gets messages from the server over TCP
 def get_from_server(sock):
         print("we are in get from")
         print(sock.recv(MESSAGE_LENGTH).decode())
+        print("finished get from")
  
 """
 sends messages to the server over TCP
@@ -56,12 +57,6 @@ def main():
             answer = input()
             send_to_server(sock, answer)
             get_from_server(sock) # the game end message
-            while True:
-                try:
-                    ch = getch.getch().encode()  # blocking, wait for char
-                    sock.sendall(ch)  # if socket is still open, send it
-                except:
-                    break
         else:
             print("Bad UDP Message Format")  # got message not in the expected format
     except Exception as e:
