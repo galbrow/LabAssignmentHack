@@ -38,7 +38,7 @@ def setUDPSocket():
 def main():
     print("Client started, listening for offer requests...")  # waits for server suggestion
     UDPsock = setUDPSocket()
-    data, address = UDPsock.recv(MESSAGE_LENGTH) # getting data andd adress from the server message
+    data, address = UDPsock.recvfrom(12) # getting data andd adress from the server message
     serverIP = str(address[0])
     try:
         magicCookie, message_type, server_tcp_port = struct.unpack('LBH', data)  # get message in specific format
