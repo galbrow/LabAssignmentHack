@@ -16,6 +16,7 @@ TIME_TO_PLAY = 10  # seconds
 gets messages from the server over TCP
 """
 def get_from_server(sock):
+        print("we are in get from")
         print(sock.recv(MESSAGE_LENGTH).decode())
  
 """
@@ -48,7 +49,9 @@ def main():
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             sock.connect((serverIP, server_tcp_port))
             name = input("Enter your team's name: ")
+            print(name)
             send_to_server(sock, name)  # send team's name to server
+            print("name sent")
             get_from_server(sock) # the game begin message
             answer = input()
             send_to_server(sock, answer)
