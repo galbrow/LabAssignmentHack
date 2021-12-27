@@ -30,14 +30,14 @@ def send_broadcast(clients):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1) # allow server to send broadcasts
     print(message)
-    while clients.len < 2:
+    while clients.len() < 2:
             send_bytes = make_bytes_message()
             sock.sendto(send_bytes, (UDP_IP, UDP_PORT)) #check udp_ip
             time.sleep(1)  # wait 1 sec
 
 
 def connect_clients(clients, sock):
-    while clients.len < 2:
+    while clients.len() < 2:
             try:
                 clientSocket, clientAdress = sock.accept()
                 clients.append(clientSocket)
