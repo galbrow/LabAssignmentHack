@@ -39,10 +39,9 @@ def send_broadcast(clients):
 def connect_clients(clients, sock):
     while len(clients) < 2:
         try:
-            sock.listen()
             print("strating conncet a client")
             clientSocket, clientAdress = sock.accept()
-            print("client connected")
+            print("connected")
             clients.append(clientSocket)
         except:
             continue
@@ -131,7 +130,7 @@ def main():
     sock = initSocket()
     while True:
         clients = list()  # client list
-        client_connector = Thread(target=connect_clients, args=(clients, sock,))  # accepts new players
+        client_connector = Thread(target=connect_clients, args=(clients, sock))  # accepts new players
         client_connector.start()
         send_broadcast(clients)
         time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user

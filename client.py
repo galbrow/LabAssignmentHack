@@ -5,6 +5,7 @@ from scapy.arch import get_if_addr
 UDP_PORT = 13117
 MESSAGE_LENGTH = 1024
 TIME_TO_PLAY = 10  # seconds
+UDP_IP = "172.1.255.255"
 
 """
 gets messages from the server over TCP
@@ -35,7 +36,7 @@ def setUDPSocket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # init UDP socket
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(("", UDP_PORT))
+    sock.bind((UDP_IP, UDP_PORT))
     return sock
 
 
