@@ -95,9 +95,12 @@ def collect_data(clients):
 def start_game(clients):
     firstClientName = clients[0].recv(MESSAGE_LENGTH).decode()
     secondClientName = clients[1].recv(MESSAGE_LENGTH).decode()
+    print(firstClientName)
+    print(secondClientName)
     clientsDictionary = {clients[0] : firstClientName , clients[1] : secondClientName}
     message ,ans = generate_question(firstClientName, secondClientName)  # generate the question and return is answear
     send_message(message, clients[0], clients[1]) # send 
+    print(message)
     clientAnswer, answerClientSocket = collect_data(clientsDictionary)
     clientAnswerName = clientsDictionary[answerClientSocket]
     nonAnswerClientName = firstClientName if clientAnswerName!=firstClientName else secondClientName
