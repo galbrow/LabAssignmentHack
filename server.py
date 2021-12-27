@@ -117,7 +117,7 @@ def start_game(clients):
 def initSocket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # init the TCP socket
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # allow use 2 sockets from the same port
-    sock.bind((ip_address, TCP_PORT))  # bind the socket with our port
+    sock.bind(("", TCP_PORT))  # bind the socket with our port
     sock.listen(MAX_CONNECTIONS_TO_SERVER - 1)  # set queue of waiting size to num of connections -1
     return sock
 
