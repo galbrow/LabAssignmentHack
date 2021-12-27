@@ -133,12 +133,12 @@ def main():
         while True:
             clients = list()  # client list
             broadCastSender = Thread(target=send_broadcast, args=(clients,))
-            broadCastSender.start()
             client_connector = Thread(target=connect_clients, args=(clients, sock))  # accepts new players
             client_connector.start()
-            time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
+            broadCastSender.start()
             client_connector.join()
             broadCastSender.join()
+            time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
             start_game(clients)  # play the game
             closeSockets(clients)
             print("Game over, sending out offer requests...")
