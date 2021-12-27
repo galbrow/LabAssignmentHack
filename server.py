@@ -93,7 +93,6 @@ def collect_data(clients):
 
 
 def start_game(clients):
-    clients = list(clients.keys())
     firstClientName = clients[0].recv(MESSAGE_LENGTH).decode()
     secondClientName = clients[1].recv(MESSAGE_LENGTH).decode()
     clientsDictionary = {clients[0] : firstClientName , clients[1] : secondClientName}
