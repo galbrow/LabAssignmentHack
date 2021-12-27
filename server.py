@@ -132,7 +132,7 @@ def main():
         sock = initSocket()
         while True:
             clients = list()  # client list
-            broadCastSender = Thread(target=send_broadcast, args=clients)
+            broadCastSender = Thread(target=send_broadcast, args=(clients,))
             broadCastSender.start()
             client_connector = Thread(target=connect_clients, args=(clients, sock))  # accepts new players
             client_connector.start()
