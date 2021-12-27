@@ -48,13 +48,16 @@ def connect_clients(clients, sock):
 def generate_question(firstName, secondName):
     leftOperand = randrange(4)
     rightOperand = randrange(4)
+    ans = str(leftOperand + rightOperand)
+    leftOperand = str(leftOperand)
+    rightOperand = str(rightOperand)
     message = "Welcome to Quick Maths.\n"
     message += "Player 1: " + firstName + '\n'
     message += "Player 2: " + secondName + '\n'
     message += "==\n"
     message += "Please answer the following question as fast as you can:\n"
     message += "How much is " + leftOperand + "+" + rightOperand + "?\n"
-    return message, leftOperand + rightOperand
+    return message, ans
 
 
 def send_message(message, conA, conB):
