@@ -40,6 +40,7 @@ def connect_clients(clients, sock):
     while len(clients) < 2:
         try:
             clientSocket, clientAdress = sock.accept()
+            print("client connected")
             clients.append(clientSocket)
         except:
             continue
