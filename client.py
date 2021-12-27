@@ -62,7 +62,7 @@ def main():
         else:
             print("Bad UDP Message Format")  # got message not in the expected format
     except Exception as e:
-        print(e.message)
+        print(e)
 
 
 if __name__ == "__main__":
