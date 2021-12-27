@@ -25,8 +25,7 @@ def make_bytes_message():
 
 def send_broadcast(clients):
     message = "Server started, listening on IP address " + ip_address
-    sock = socket.socket(socket.AF_INET,
-                         socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
+    sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # allow server to send broadcasts
     print(message)
@@ -34,6 +33,7 @@ def send_broadcast(clients):
         send_bytes = make_bytes_message()
         sock.sendto(send_bytes, (UDP_IP, UDP_PORT))  # check udp_ip
         time.sleep(1)  # wait 1 sec
+    sock.close()
 
 
 def connect_clients(clients, sock):
@@ -128,18 +128,21 @@ def closeSockets(clients):
 
 
 def main():
-    sock = initSocket()
-    while True:
-        clients = list()  # client list
-        client_connector = Thread(target=connect_clients, args=(clients, sock))  # accepts new players
-        client_connector.start()
-        send_broadcast(clients)
-        time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
-        client_connector.join()
-        start_game(clients)  # play the game
-        closeSockets(clients)
-        print("Game over, sending out offer requests...")
-
+    try:
+        sock = initSocket()
+        while True:
+            clients = list()  # client list
+            client_connector = Thread(target=connect_clients, args=(clients, sock))  # accepts new players
+            client_connector.start()
+            send_broadcast(clients)
+            time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
+            client_connector.join()
+            start_game(clients)  # play the game
+            closeSockets(clients)
+            print("Game over, sending out offer requests...")
+    except Exception as e:
+        print(e)
+        sock.close()
 
 if __name__ == "__main__":
     main()
