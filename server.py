@@ -98,7 +98,7 @@ def start_game(clients):
     secondClientName = clients[1].recv(MESSAGE_LENGTH).decode()
     print(firstClientName)
     print(secondClientName)
-    clientsDictionary = {clients[0]: firstClientName, clients[1]: secondClientName}
+    clientsDictionary = {clients[0]: firstClientName, clients[1]: secondClientName, "": ""}
     message, ans = generate_question(firstClientName, secondClientName)  # generate the question and return is answear
     send_message(message, clients[0], clients[1])  # send
     print(message)
