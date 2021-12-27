@@ -6,6 +6,7 @@ from threading import Thread
 from scapy.all import get_if_addr
 from random import randrange
 
+ip_address = get_if_addr("eth1")
 UDP_IP = "172.1.255.255"
 UDP_PORT = 13117
 TCP_PORT = 2132
@@ -23,7 +24,6 @@ def make_bytes_message():
 
 
 def send_broadcast(clients):
-    ip_address = get_if_addr("eth1")
     message = "Server started, listening on IP address " + ip_address
     sock = socket.socket(socket.AF_INET,
                          socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
@@ -116,7 +116,7 @@ def start_game(clients):
 def initSocket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # init the TCP socket
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # allow use 2 sockets from the same port
-    sock.bind(('', TCP_PORT))  # bind the socket with our port
+    sock.bind((ip_address, TCP_PORT))  # bind the socket with our port
     sock.listen(MAX_CONNECTIONS_TO_SERVER - 1)  # set queue of waiting size to num of connections -1
     return sock
 
