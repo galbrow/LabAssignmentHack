@@ -109,7 +109,7 @@ def start_game(clients):
     clientAnswerName = clientsDictionary[answerClientSocket]
     nonAnswerClientName = firstClientName if clientAnswerName != firstClientName else secondClientName
     winner = "" if clientAnswer == "" else clientAnswerName if clientAnswer == ans else nonAnswerClientName
-    end_message = generate_end_message(firstClientName, secondClientName, winner, ans)  # generate end message
+    end_message = generate_end_message(winner, ans)  # generate end message
     print(end_message)
     send_message(end_message, clients[0], clients[1])
 
