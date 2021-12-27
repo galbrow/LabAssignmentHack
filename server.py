@@ -134,7 +134,7 @@ def main():
             start_game(clients)  # play the game
             closeSockets(clients)
             print("Game over, sending out offer requests...")
-
+    print("done")
 
 if __name__ == "__main__":
     main()
