@@ -35,7 +35,7 @@ sets UDP socket
 def setUDPSocket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # init UDP socket
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.bind((UDP_IP, UDP_PORT))
     return sock
 
@@ -51,6 +51,7 @@ def main():
             print("Received offer from " + serverIP + ", attempting to connect...")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # init TCP socket
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+            print("starting connect")
             sock.connect((serverIP, server_tcp_port))
             name = input("Enter your team's name: ")
             print(name)
