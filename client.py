@@ -1,11 +1,5 @@
-import os
 import socket
 import struct
-import sys
-import time
-from threading import Thread
-import getch
-import signal
 from scapy.arch import get_if_addr
 
 UDP_PORT = 13117
@@ -15,20 +9,28 @@ TIME_TO_PLAY = 10  # seconds
 """
 gets messages from the server over TCP
 """
+
+
 def get_from_server(sock):
-        print("we are in get from")
-        print(sock.recv(MESSAGE_LENGTH).decode())
-        print("finished get from")
- 
+    print("we are in get from")
+    print(sock.recv(MESSAGE_LENGTH).decode())
+    print("finished get from")
+
+
 """
 sends messages to the server over TCP
 """
+
+
 def send_to_server(sock, message):
-        sock.sendall(message.encode())
-    
+    sock.sendall(message.encode())
+
+
 """
 sets UDP socket 
 """
+
+
 def setUDPSocket():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # init UDP socket
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -40,7 +42,7 @@ def setUDPSocket():
 def main():
     print("Client started, listening for offer requests...")  # waits for server suggestion
     UDPsock = setUDPSocket()
-    data, address = UDPsock.recvfrom(7) # getting data andd adress from the server message
+    data, address = UDPsock.recvfrom(7)  # getting data andd adress from the server message
     serverIP = str(address[0])
     try:
         magicCookie, message_type, server_tcp_port = struct.unpack('LBH', data)  # get message in specific format
@@ -53,10 +55,10 @@ def main():
             print(name)
             send_to_server(sock, name)  # send team's name to server
             print("name sent")
-            get_from_server(sock) # the game begin message
+            get_from_server(sock)  # the game begin message
             answer = input()
             send_to_server(sock, answer)
-            get_from_server(sock) # the game end message
+            get_from_server(sock)  # the game end message
         else:
             print("Bad UDP Message Format")  # got message not in the expected format
     except Exception as e:
