@@ -39,6 +39,7 @@ def send_broadcast(clients):
 def connect_clients(clients, sock):
     while len(clients) < 2:
         try:
+            sock.listen()
             print("strating conncet a client")
             clientSocket, clientAdress = sock.accept()
             print("client connected")
