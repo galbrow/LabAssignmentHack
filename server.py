@@ -16,8 +16,8 @@ MAX_CONNECTIONS_TO_SERVER = 2
 
 
 def make_bytes_message():
-    return struct.pack('LBH', 0xabcddcba, 0x2, TCP_PORT)  
-    # support L - unsigned long
+    return struct.pack('LBH',0xabcddcba, 0x2, TCP_PORT)  
+    # support  - L unsigned long
     # B - unsigned char
     # H - unsigned short
 
