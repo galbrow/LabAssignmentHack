@@ -84,9 +84,10 @@ def collect_data(clients):
     q = Queue()
     while q.empty():
         cls = list()
-        for clientSocket in clients.values():  # make a list of a clients thread
-            clThread = Thread(target=(collect_data_from_client), args=(clientSocket, q))
-            cls.append(clThread)
+        for clientSocket in clients.keys():  # make a list of a clients thread
+            if clientSocket != "":
+                clThread = Thread(target=(collect_data_from_client), args=(clientSocket, q))
+                cls.append(clThread)
         for th in cls:  # begin all threads in paralel
             th.start()
         try:
