@@ -25,7 +25,7 @@ def make_bytes_message():
 
 def send_broadcast(clients):
     message = "Server started, listening on IP address " + ip_address
-    sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # allow server to send broadcasts
     print(message)
@@ -43,8 +43,8 @@ def connect_clients(clients, sock):
             clientSocket, clientAdress = sock.accept()
             print("connected")
             clients.append(clientSocket)
-        except:
-            continue
+        except Exception as e:
+            print(e)
 
 
 def generate_question(firstName, secondName):
@@ -86,7 +86,7 @@ def collect_data(clients):
         cls = list()
         for clientSocket in clients.keys():  # make a list of a clients thread
             if clientSocket != "":
-                clThread = Thread(target=(collect_data_from_client), args=(clientSocket, q))
+                clThread = Thread(target=(collect_data_from_client), args=(clientSocket, q,))
                 cls.append(clThread)
         for th in cls:  # begin all threads in paralel
             th.start()
@@ -98,8 +98,8 @@ def collect_data(clients):
 
 def start_game(clients):
     firstClientName = clients[0].recv(MESSAGE_LENGTH).decode()
-    secondClientName = clients[1].recv(MESSAGE_LENGTH).decode()
     print(firstClientName)
+    secondClientName = clients[1].recv(MESSAGE_LENGTH).decode()
     print(secondClientName)
     clientsDictionary = {clients[0]: firstClientName, clients[1]: secondClientName, "": ""}
     message, ans = generate_question(firstClientName, secondClientName)  # generate the question and return is answear
@@ -132,12 +132,10 @@ def main():
         sock = initSocket()
         while True:
             clients = list()  # client list
-            broadCastSender = Thread(target=send_broadcast, args=(clients,))
-            client_connector = Thread(target=connect_clients, args=(clients, sock))  # accepts new players
+            client_connector = Thread(target=connect_clients, args=(clients, sock,))  # accepts new players
             client_connector.start()
-            broadCastSender.start()
+            send_broadcast(clients)
             client_connector.join()
-            broadCastSender.join()
             time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
             start_game(clients)  # play the game
             closeSockets(clients)
@@ -145,6 +143,7 @@ def main():
     except Exception as e:
         print(e)
         sock.close()
+
 
 if __name__ == "__main__":
     main()
