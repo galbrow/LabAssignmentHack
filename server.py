@@ -122,7 +122,7 @@ def closeSockets(clients):
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:  # init the TCP socket
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # allow use 2 sockets from the same port
-        sock.bind(('', TCP_PORT))  # bind the socket with our port
+        sock.bind((ip_address, TCP_PORT))  # bind the socket with our port
         sock.listen()  # set queue of waiting size to num of connections -1
         while True:
             clients = list()  # client list
