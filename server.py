@@ -1,6 +1,7 @@
 import socket
 import time
 import struct
+import getch
 from queue import Queue
 from threading import Thread
 from scapy.all import get_if_addr
@@ -28,6 +29,7 @@ def send_broadcast(clients):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # allow server to send broadcasts
+    sock.bind((ip_address, TCP_PORT))
     print(message)
     while len(clients) < 2:
         send_bytes = make_bytes_message()
@@ -94,7 +96,6 @@ def collect_data(clients):
             return q.get(True, TIME_TO_PLAY)
         except:
             return "", ""
-
 
 def start_game(clients):
     firstClientName = clients[0].recv(MESSAGE_LENGTH).decode()

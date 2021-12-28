@@ -65,6 +65,8 @@ def main():
             print("Bad UDP Message Format")  # got message not in the expected format
     except Exception as e:
         print(e)
+    sock.close()
+    UDPsock.close()
 
 
 if __name__ == "__main__":
