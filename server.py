@@ -28,7 +28,7 @@ def send_broadcast(clients):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # UDP need to check ipproto
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # allow server to send broadcasts
-    sock.bind((ip_address, TCP_PORT))
+    sock.bind((UDP_IP, TCP_PORT))
     print(message)
     while len(clients) < 2:
         send_bytes = make_bytes_message()
@@ -42,7 +42,7 @@ def connect_clients(clients, sock):
         try:
             print("strating conncet a client")
             clientSocket, clientAdress = sock.accept()
-            print("connected")
+            print("connected to:\nclient addr[0] --> " + str(clientAdress[0]) + "\nclient addr[1] --> " + str(clientAdress[1]))
             clients.append(clientSocket)
         except Exception as e:
             print(e)
@@ -122,7 +122,7 @@ def closeSockets(clients):
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:  # init the TCP socket
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # allow use 2 sockets from the same port
-        sock.bind((ip_address, TCP_PORT))  # bind the socket with our port
+        sock.bind(('', TCP_PORT))  # bind the socket with our port
         sock.listen()  # set queue of waiting size to num of connections -1
         while True:
             clients = list()  # client list
@@ -130,7 +130,7 @@ def main():
             client_connector.start()
             send_broadcast(clients)
             client_connector.join()
-            time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
+            time.sleep(1)  # waits 10 seconds after assign 2nd user
             start_game(clients)  # play the game
             closeSockets(clients)
             print("Game over, sending out offer requests...")

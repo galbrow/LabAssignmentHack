@@ -1,5 +1,6 @@
 import socket
 import struct
+from threading import Thread
 from scapy.arch import get_if_addr
 
 UDP_PORT = 13117
@@ -23,8 +24,9 @@ sends messages to the server over TCP
 """
 
 
-def send_to_server(sock, message):
-    sock.sendall(message.encode())
+def send_to_server(sock, inputMessage):
+    data = input(inputMessage)
+    sock.sendall(data.encode())
 
 
 """
@@ -43,6 +45,7 @@ def setUDPSocket():
 def main():
     print("Client started, listening for offer requests...")  # waits for server suggestion
     UDPsock = setUDPSocket()
+    time.sleep(0.1)
     data, address = UDPsock.recvfrom(12) # getting data andd adress from the server message
     serverIP = str(address[0])
     try:
@@ -53,13 +56,13 @@ def main():
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             print("starting connect")
             sock.connect((serverIP, server_tcp_port))
-            name = input("Enter your team's name: ")
-            print(name)
-            send_to_server(sock, name)  # send team's name to server
+            print("serverIP --> " + serverIP)
+            print("server_tcp_port --> " + str(server_tcp_port))
+            send_to_server(sock, "Enter your team's name: ")  # send team's name to server
             print("name sent")
             get_from_server(sock)  # the game begin message
-            answer = input()
-            send_to_server(sock, answer)
+            ansThread = Thread(target=send_to_server,args=(sock,"",),daemon=True)
+            ansThread.start()
             get_from_server(sock)  # the game end message
         else:
             print("Bad UDP Message Format")  # got message not in the expected format
