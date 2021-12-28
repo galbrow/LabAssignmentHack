@@ -1,7 +1,6 @@
 import socket
 import time
 import struct
-import getch
 from queue import Queue
 from threading import Thread
 from scapy.all import get_if_addr
