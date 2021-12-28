@@ -9,7 +9,7 @@ from random import randrange
 ip_address = get_if_addr("eth1")
 UDP_IP = '127.0.0.1'
 UDP_PORT = 13117
-TCP_PORT = 2132
+TCP_PORT = 21321
 MESSAGE_LENGTH = 1024
 TIME_TO_CONNECT = 10  # seconds
 TIME_TO_PLAY = 10  # seconds
@@ -28,7 +28,6 @@ def send_broadcast(clients):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP need to check ipproto
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # allow server to send broadcasts
-    sock.bind((UDP_IP, UDP_PORT))
     print(message)
     while len(clients) < 2:
         send_bytes = make_bytes_message()
@@ -122,7 +121,7 @@ def closeSockets(clients):
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:  # init the TCP socket
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # allow use 2 sockets from the same port
-        sock.bind(("", TCP_PORT))  # bind the socket with our port
+        sock.bind(('', TCP_PORT))  # bind the socket with our port
         sock.listen()  # set queue of waiting size to num of connections -1
         while True:
             try:
@@ -131,14 +130,12 @@ def main():
                 client_connector.start()
                 send_broadcast(clients)
                 client_connector.join()
-                time.sleep(1)  # waits 10 seconds after assign 2nd user
+                time.sleep(TIME_TO_CONNECT)  # waits 10 seconds after assign 2nd user
                 start_game(clients)  # play the game
                 closeSockets(clients)
                 print("Game over, sending out offer requests...")
             except Exception as e:
-                print("-----------------")
-                print(e)
-                print("-----------------")
+                print("error occured, game stopped")
                 break
     print("done")
 
