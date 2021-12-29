@@ -1,7 +1,10 @@
 import socket
 import struct
 from threading import Thread
+
+from colorama.ansi import Fore
 from scapy.arch import get_if_addr
+from colorama import Back
 
 ip_address = get_if_addr("eth1")
 UDP_IP = '127.0.0.1'
@@ -24,7 +27,7 @@ sends messages to the server over TCP
 
 
 def send_to_server(sock, inputMessage):
-    data = input(inputMessage+"\n")
+    data = input(Back.BLUE+inputMessage+"\n")
     sock.sendall(data.encode())
 
 
@@ -35,7 +38,7 @@ sets UDP socket
 
 
 def main():
-    print("Client started, listening for offer requests...")  # waits for server suggestion
+    print(Back.MAGENTA+"Client started, listening for offer requests...")  # waits for server suggestion
     UDPsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # init UDP socket
     UDPsock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     UDPsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -47,7 +50,7 @@ def main():
         magicCookie, message_type, server_tcp_port = struct.unpack('LBH', data)  # get message in specific format
         print(str(server_tcp_port))
         if magicCookie == 0xabcddcba or message_type == 0x2:  # check if message is as expected
-            print("Received offer from " + serverIP + ", attempting to connect...")
+            print(Back.GREEN+"Received offer from " + serverIP + ", attempting to connect...")
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # init TCP socket
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             sock.connect((serverIP, server_tcp_port))
@@ -58,9 +61,8 @@ def main():
             get_from_server(sock)  # the game end message
             sock.close()
         else:
-            print("Bad UDP Message Format")  # got message not in the expected format
-    except Exception as e:
-        print(e)
+            print(Back.CYAN+"Bad UDP Message Format")  # got message not in the expected format
+    except:
         UDPsock.close()
 
 
