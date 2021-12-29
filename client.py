@@ -3,8 +3,6 @@ import struct
 from threading import Thread
 from scapy.arch import get_if_addr
 
-ip_address = get_if_addr("eth1")
-# ip_address = socket.gethostbyname(socket.gethostname())
 UDP_IP = '127.0.0.1'
 UDP_PORT = 13117
 MESSAGE_LENGTH = 1024
@@ -43,7 +41,6 @@ def main():
     UDPsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)  # init UDP socket
     UDPsock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     UDPsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    print(ip_address)
     UDPsock.bind((UDP_IP,UDP_PORT))
     data, address = UDPsock.recvfrom(12) # getting data andd adress from the server message
     serverIP = str(address[0])
@@ -64,9 +61,7 @@ def main():
             else:
                 print(COLORS[3]+"Bad UDP Message Format")  # got message not in the expected format
         except Exception as e:
-            print(e)
             UDPsock.close()
-            break
 
 
 if __name__ == "__main__":
