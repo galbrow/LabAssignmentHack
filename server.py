@@ -9,10 +9,10 @@ from random import randrange
 ip_address = get_if_addr("eth1")
 UDP_IP = '127.0.0.1'
 UDP_PORT = 13117
-TCP_PORT = 21321
+TCP_PORT = 21329
 MESSAGE_LENGTH = 1024
-TIME_TO_CONNECT = 10  # seconds
-TIME_TO_PLAY = 10  # seconds
+TIME_TO_CONNECT = 2  # seconds
+TIME_TO_PLAY = 2  # seconds
 MAX_CONNECTIONS_TO_SERVER = 2
 COLORS = ['\033[95m','\033[94m','\033[96m','\033[92m','\033[93m','\033[91m']
 participants = {}
@@ -23,7 +23,7 @@ def randColor():
     return COLORS[num]
 
 def make_bytes_message():
-    return struct.pack('LBH', 0xabcddcba, 0x2, TCP_PORT)
+    return struct.pack('IBH', 0xabcddcba, 0x2, TCP_PORT)
     # support  - L unsigned long
     # B - unsigned char
     # H - unsigned short
@@ -59,18 +59,18 @@ def connect_clients(clients, sock):
 
 
 def generate_question(firstName, secondName):
-    squered = randrange(3)
-    normalx = randrange(3)
-    nonX = randrange(9)
+    squered = randrange(1,3)
+    normalx = randrange(1,3)
+    nonX = randrange(1,9)
     ans = str(squered*2 + normalx)
-    squered = str(squered)+"x^2"
-    normalx = str(normalx)+"x"
+    squered = str(squered) + "x^2"
+    normalx = str(normalx) + "x"
     message = randColor()+"Welcome to Quick Maths.\n"
     message += randColor()+"Player 1: " + firstName + '\n'
     message += randColor()+"Player 2: " + secondName + '\n'
     message += randColor()+"==\n"
     message += randColor()+"Please answer the following question as fast as you can:\n"
-    message += randColor()+"How much is f'(1) of" + squered + "+" + normalx +"+"+nonX+ "?\n"
+    message += randColor()+"How much is f'(1) of " + squered + "+" + normalx +"+" + str(nonX) + "?\n"
     return message, ans
 
 
@@ -133,7 +133,7 @@ def closeSockets(clients):
 def printStatistics():
     statistics = randColor() + "statics:\n"
     for adres in participants.keys():
-        statistics += randColor() + adres +" won "+ participants[adres] + " times\n"
+        statistics += randColor() + str(adres) +" won "+ str(participants[adres]) + " times\n"
     print(statistics)
     
 

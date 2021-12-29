@@ -46,7 +46,7 @@ def main():
     data, address = UDPsock.recvfrom(12) # getting data andd adress from the server message
     serverIP = str(address[0])
     try:
-        magicCookie, message_type, server_tcp_port = struct.unpack('LBH', data)  # get message in specific format
+        magicCookie, message_type, server_tcp_port = struct.unpack('IBH', data)  # get message in specific format
         print(str(server_tcp_port))
         if magicCookie == 0xabcddcba or message_type == 0x2:  # check if message is as expected
             print(COLORS[2]+"Received offer from " + serverIP + ", attempting to connect...")
