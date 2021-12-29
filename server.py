@@ -11,8 +11,8 @@ UDP_IP = '127.0.0.1'
 UDP_PORT = 13117
 TCP_PORT = 21329
 MESSAGE_LENGTH = 1024
-TIME_TO_CONNECT = 2  # seconds
-TIME_TO_PLAY = 2  # seconds
+TIME_TO_CONNECT = 10  # seconds
+TIME_TO_PLAY = 10  # seconds
 MAX_CONNECTIONS_TO_SERVER = 2
 COLORS = ['\033[95m','\033[94m','\033[96m','\033[92m','\033[93m','\033[91m']
 participants = {}
@@ -52,8 +52,7 @@ def connect_clients(clients, sock):
             if clientAdress not in participants.keys():
                 participants[clientAdress] = 0
                 currentParticipants[clientSocket] = clientAdress
-        except Exception as e:
-            print(e)
+        except:
             print(randColor()+"error occured during connect client")
 
 
@@ -155,8 +154,7 @@ def main():
                 print(randColor()+"Game over, sending out offer requests...")
                 currentParticipants.clear()
                 printStatistics()
-            except Exception as e:
-                print(e)
+            except:
                 print(randColor()+"error occured, game stopped")
                 break
 
