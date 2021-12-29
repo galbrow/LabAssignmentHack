@@ -1,7 +1,6 @@
 import socket
 import time
 import struct
-from colorama import Back
 from queue import Queue
 from threading import Thread
 from scapy.all import get_if_addr
@@ -10,12 +9,12 @@ from random import randrange
 ip_address = get_if_addr("eth1")
 UDP_IP = '127.0.0.1'
 UDP_PORT = 13117
-TCP_PORT = 2132
+TCP_PORT = 21321
 MESSAGE_LENGTH = 1024
 TIME_TO_CONNECT = 10  # seconds
 TIME_TO_PLAY = 10  # seconds
 MAX_CONNECTIONS_TO_SERVER = 2
-COLORS = [Back.RED, Back.GREEN, Back.YELLOW, Back.BLUE, Back.MAGENTA, Back.CYAN]
+COLORS = ['\033[95m','\033[94m','\033[96m','\033[92m','\033[93m','\033[91m']
 participants = {}
 currentParticipants = {}
 
@@ -46,12 +45,15 @@ def send_broadcast(clients):
 def connect_clients(clients, sock):
     while len(clients) < MAX_CONNECTIONS_TO_SERVER:
         try:
+            print("start connect")
             clientSocket, clientAdress = sock.accept()
+            print("\nhi\n")
             clients.append(clientSocket)
             if clientAdress not in participants.keys():
-                participants.update({clientAdress,0})
-                currentParticipants.update({clientSocket,clientAdress})
-        except:
+                participants[clientAdress] = 0
+                currentParticipants[clientSocket] = clientAdress
+        except Exception as e:
+            print(e)
             print(randColor()+"error occured during connect client")
 
 
@@ -153,7 +155,8 @@ def main():
                 print(randColor()+"Game over, sending out offer requests...")
                 currentParticipants.clear()
                 printStatistics()
-            except:
+            except Exception as e:
+                print(e)
                 print(randColor()+"error occured, game stopped")
                 break
 
